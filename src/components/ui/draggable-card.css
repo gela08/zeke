@@ -1,0 +1,35 @@
+/* ===== Container Perspective ===== */
+.draggable-container {
+  perspective: 3000px;
+}
+
+/* ===== Card ===== */
+.draggable-card {
+  position: relative;
+  width: 18rem;
+  min-height: 22rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: #f5f5f5;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+  cursor: grab;
+}
+
+@media (prefers-color-scheme: dark) {
+  .draggable-card {
+    background: #0f0f0f;
+  }
+}
+
+/* ===== Glare Effect ===== */
+.draggable-glare {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: white;
+  mix-blend-mode: overlay;
+  user-select: none;
+}

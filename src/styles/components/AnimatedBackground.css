@@ -1,0 +1,19 @@
+.background {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, #ff9a9e44, transparent 40%),
+    radial-gradient(circle at 80% 30%, #fad0c444, transparent 40%),
+    linear-gradient(180deg, #0e0e11, #15151b);
+  z-index: -1;
+  animation: slowMove 20s ease-in-out infinite alternate;
+}
+
+@keyframes slowMove {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(10deg);
+  }
+}

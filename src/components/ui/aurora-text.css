@@ -1,0 +1,42 @@
+/* ===== Wrapper ===== */
+.aurora-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* ===== Screen Reader Only ===== */
+.aurora-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== Animated Gradient Text ===== */
+.aurora-text {
+  display: inline-block;
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  animation-name: aurora-move;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* ===== Animation ===== */
+@keyframes aurora-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}

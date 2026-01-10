@@ -1,0 +1,57 @@
+.memories {
+  min-height: 100vh;
+  padding: 140px 12vw 100px;
+}
+
+.memories h2 {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 80px;
+}
+
+.memories ul {
+  list-style: none;
+  max-width: 720px;
+  margin: 0 auto;
+  padding-left: 30px;
+  position: relative;
+}
+
+.memories ul::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 154, 158, 0.6),
+    transparent
+  );
+}
+
+.memories li {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 50px;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.memories li::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  background: #ff9a9e;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(255, 154, 158, 0.9);
+}
+
+.memories li:hover {
+  opacity: 1;
+}

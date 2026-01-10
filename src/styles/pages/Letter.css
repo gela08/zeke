@@ -1,0 +1,89 @@
+/* ===== Section Layout ===== */
+.letter-section {
+  padding: 4rem 2rem;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .letter-section {
+    padding: 0 4rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .letter-section {
+    padding: 0 8rem;
+  }
+}
+
+/* ===== Container ===== */
+.letter-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: clip;
+}
+
+/* ===== Center Text ===== */
+.letter-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-75%);
+  max-width: 24rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #a3a3a3;
+  z-index: 0;
+}
+
+@media (min-width: 768px) {
+  .letter-text {
+    font-size: 2.25rem;
+  }
+}
+
+/* ===== Card Base ===== */
+.card {
+  position: absolute;
+}
+
+/* ===== Individual Card Positions ===== */
+.card-1  { top: 2.5rem; left: 20%; transform: rotate(-5deg); }
+.card-2  { top: 10rem; left: 25%; transform: rotate(-7deg); }
+.card-3  { top: 1.25rem; left: 40%; transform: rotate(8deg); }
+.card-4  { top: 8rem; left: 55%; transform: rotate(10deg); }
+.card-5  { top: 5rem; right: 35%; transform: rotate(2deg); }
+.card-6  { top: 6rem; left: 45%; transform: rotate(-7deg); }
+.card-7  { top: 2rem; left: 30%; transform: rotate(4deg); }
+
+.card-8  { top: 2.5rem; right: 20%; transform: rotate(5deg); }
+.card-9  { top: 10rem; right: 25%; transform: rotate(7deg); }
+.card-10 { top: 6rem; right: 45%; transform: rotate(7deg); }
+.card-11 { top: 2rem; right: 30%; transform: rotate(-4deg); }
+
+/* ===== Image ===== */
+.letter-image {
+  height: 20rem;
+  width: 20rem;
+  object-fit: cover;
+  pointer-events: none;
+  position: relative;
+  z-index: 10;
+}
+
+/* ===== Optional Title ===== */
+.letter-title {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #404040;
+}
