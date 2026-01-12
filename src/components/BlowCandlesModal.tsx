@@ -184,6 +184,7 @@ export default function BlowCandlesModal({ open, onClose, age }: Props) {
 
                             <div className="icing" />
                             <div className="drip drip1" />
+                            <div className="drip drip4" />
                             <div className="drip drip2" />
                             <div className="drip drip3" />
 
