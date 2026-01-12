@@ -20,7 +20,7 @@ export default function App() {
           <Home />
         </section>
 
-        <section id="letter">
+        {/* <section id="letter">
           <Letter />
         </section>
 
@@ -30,11 +30,12 @@ export default function App() {
 
         <section id="gallery">
           <Gallery />
-        </section>
+        </section> */}
 
-        <section id="final">
+        {/* <section id="final">
           <Final />
-        </section>
+        </section> */}
+
       </main>
 
       <Footer />

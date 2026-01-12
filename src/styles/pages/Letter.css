@@ -36,7 +36,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-75%);
-  max-width: 24rem;
+  max-width: 25rem;
   text-align: center;
   font-size: 1.5rem;
   font-weight: 900;
@@ -55,19 +55,42 @@
   position: absolute;
 }
 
-/* ===== Individual Card Positions ===== */
-.card-1  { top: 2.5rem; left: 20%; transform: rotate(-5deg); }
-.card-2  { top: 10rem; left: 25%; transform: rotate(-7deg); }
-.card-3  { top: 1.25rem; left: 40%; transform: rotate(8deg); }
-.card-4  { top: 8rem; left: 55%; transform: rotate(10deg); }
-.card-5  { top: 5rem; right: 35%; transform: rotate(2deg); }
-.card-6  { top: 6rem; left: 45%; transform: rotate(-7deg); }
-.card-7  { top: 2rem; left: 30%; transform: rotate(4deg); }
+/* ===== Individual Offsets (small, intentional) ===== */
 
-.card-8  { top: 2.5rem; right: 20%; transform: rotate(5deg); }
-.card-9  { top: 10rem; right: 25%; transform: rotate(7deg); }
-.card-10 { top: 6rem; right: 45%; transform: rotate(7deg); }
-.card-11 { top: 2rem; right: 30%; transform: rotate(-4deg); }
+.card-1  { top: 2.5px; left: 129%; transform: rotate(5deg); }
+.card-2  { top: 50px; left: 113%; transform: rotate(7deg); }
+.card-3  { top: -10px; left: 68%; transform: rotate(5deg); }
+.card-4  { top: 100px; left: 48%; transform: rotate(5deg); }
+.card-5  { top: -50px; left: 33%; transform: rotate(5deg); }
+
+.card-6  { top: 6px; left: 17%; transform: rotate(-7deg); }
+.card-7  { top: 200px; left: 7%; transform: rotate(4deg); }
+.card-8  { top: 150px; left: 57%; transform: rotate(5deg); }
+.card-9  { top: -100px; left: 67%; transform: rotate(7deg); }
+.card-10 { top: -130px; left: 110%; transform: rotate(7deg); }
+.card-11 { top: -106px; left: 140%; transform: rotate(7deg); }
+
+.card-12  { top: 2.5px; right: 129%; transform: rotate(5deg); }
+.card-13  { top: 50px; right: 113%; transform: rotate(7deg); }
+.card-14  { top: -10px; right: 68%; transform: rotate(5deg); }
+.card-15  { top: 100px; right: 48%; transform: rotate(5deg); }
+.card-16  { top: -50px; right: 33%; transform: rotate(5deg); }
+
+.card-17  { top: 6px; right: 17%; transform: rotate(-7deg); }
+.card-18  { top: 200px; right: 7%; transform: rotate(4deg); }
+.card-19  { top: 150px; right: 57%; transform: rotate(5deg); }
+.card-20  { top: -100px; right: 67%; transform: rotate(7deg); }
+.card-21 { top: -130px; right: 110%; transform: rotate(7deg); }
+.card-21 { top: -106px; right: 140%; transform: rotate(7deg); }
+
+/* .card-1  { transform: translate(-50%, -50%) rotate(-8deg) translateX(-120px); }
+.card-2  { transform: translate(-50%, -50%) rotate(-5deg) translateX(-70px); }
+.card-3  { transform: translate(-50%, -50%) rotate(-2deg) translateX(-20px); }
+
+.card-4  { transform: translate(-50%, -50%) rotate(2deg) translateX(20px); }
+.card-5  { transform: translate(-50%, -50%) rotate(5deg) translateX(70px); } */
+
+
 
 /* ===== Image ===== */
 .letter-image {
@@ -86,4 +109,8 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: #404040;
+}
+
+.letter-card-td {
+  width: 22rem;
 }

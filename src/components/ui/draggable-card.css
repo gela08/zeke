@@ -6,7 +6,7 @@
 /* ===== Card ===== */
 .draggable-card {
   position: relative;
-  width: 18rem;
+  min-width: fit-content;
   min-height: 22rem;
   padding: 1.5rem;
   border-radius: 12px;
