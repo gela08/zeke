@@ -19,7 +19,7 @@ export default function Home() {
 
       <p>This website is for you.</p>
 
-      <BlowCandlesModal open={open} onClose={() => setOpen(false)} age={22} />
+      <BlowCandlesModal open={open} onClose={() => setOpen(false)}/>
     </section>
   )
 }

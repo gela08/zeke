@@ -5,17 +5,15 @@ import "../styles/components/BlowCandlesModal.css"
 interface Props {
     open: boolean
     onClose: () => void
-    age: number
 }
 
-export default function BlowCandlesModal({ open, onClose, age }: Props) {
+export default function BlowCandlesModal({ open, onClose }: Props) {
     /* -------------------- CANDLES -------------------- */
 
     const MAX_CANDLES = 22
-    const candleCount = Math.min(age, MAX_CANDLES)
-
+    // Defaulting to 22 candles to ensure the "22" shape is always complete
     const [litCandles, setLitCandles] = useState<boolean[]>(
-        () => Array(candleCount).fill(true)
+        () => Array(MAX_CANDLES).fill(true)
     )
 
     const [listening, setListening] = useState(false)
@@ -63,21 +61,25 @@ export default function BlowCandlesModal({ open, onClose, age }: Props) {
     const startMic = async () => {
         if (listening || celebrate) return
 
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-        streamRef.current = stream
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+            streamRef.current = stream
 
-        const audioCtx = new AudioContext()
-        audioCtxRef.current = audioCtx
+            const audioCtx = new AudioContext()
+            audioCtxRef.current = audioCtx
 
-        const source = audioCtx.createMediaStreamSource(stream)
-        const analyser = audioCtx.createAnalyser()
+            const source = audioCtx.createMediaStreamSource(stream)
+            const analyser = audioCtx.createAnalyser()
 
-        analyser.fftSize = 256
-        source.connect(analyser)
-        analyserRef.current = analyser
+            analyser.fftSize = 256
+            source.connect(analyser)
+            analyserRef.current = analyser
 
-        setListening(true)
-        detectBlow()
+            setListening(true)
+            detectBlow()
+        } catch (err) {
+            console.error("Microphone access denied", err)
+        }
     }
 
     const stopMic = () => {
@@ -96,28 +98,27 @@ export default function BlowCandlesModal({ open, onClose, age }: Props) {
     /* -------------------- EXTINGUISH -------------------- */
 
     const extinguishCandlesSequentially = () => {
-  const interval = setInterval(() => {
-    setLitCandles(prev => {
-      const next = [...prev]
-      const index = next.findIndex(c => c)
+        const interval = setInterval(() => {
+            setLitCandles(prev => {
+                const next = [...prev]
+                const index = next.findIndex(c => c)
 
-      if (index === -1) {
-        clearInterval(interval)
-        return prev
-      }
+                if (index === -1) {
+                    clearInterval(interval)
+                    return prev
+                }
 
-      next[index] = false
+                next[index] = false
 
-      // 🎉 LAST CANDLE JUST WENT OUT
-      if (!next.includes(true)) {
-        clearInterval(interval)
-        setCelebrate(true)
-      }
+                if (!next.includes(true)) {
+                    clearInterval(interval)
+                    setCelebrate(true)
+                }
 
-      return next
-    })
-  }, 100) // ⬅️ reduce from 300
-}
+                return next
+            })
+        }, 100)
+    }
 
     /* -------------------- BLOW DETECT -------------------- */
 
@@ -146,6 +147,20 @@ export default function BlowCandlesModal({ open, onClose, age }: Props) {
 
     const allOut = litCandles.every(c => !c)
 
+    /* -------------------- NUMBER 2 LOGIC -------------------- */
+
+    // Hand-mapped coordinates for 11 candles to form a "2"
+    // Grid: 3 columns (0,1,2) and 5 rows (0,1,2,3,4)
+    const pointsForTwo = [
+        { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, // Top bar
+        { x: 2, y: 1 },                                 // Upper right side
+        { x: 2, y: 2 }, { x: 1, y: 2 }, { x: 0, y: 2 }, // Middle cross bar
+        { x: 0, y: 3 },                                 // Lower left side
+        { x: 0, y: 4 }, { x: 1, y: 4 }, { x: 2, y: 4 }, // Bottom bar
+    ];
+
+    const candleSpacingX = 28; // Horizontal distance between candles
+    const candleSpacingY = 32; // Vertical distance between candles
 
     /* -------------------- RENDER -------------------- */
 
@@ -188,62 +203,18 @@ export default function BlowCandlesModal({ open, onClose, age }: Props) {
                             <div className="drip drip2" />
                             <div className="drip drip3" />
 
-                            {/* <div className="candles upper">
+                            {/* First '2' */}
+                            <div className="candles one" style={{ position: 'absolute', left: '20%', top: '25%' }}>
                                 {litCandles.slice(0, 11).map((isLit, i) => {
-                                    const total = 22
-                                    const arc = 200 // degrees
-                                    const start = -100 // center the arc
-
-                                    const angle = start + (arc / (total - 1)) * i
-                                    const radius = i < 11 ? 230 : 170 // outer + inner row
-
-                                    const rad = (angle * Math.PI) / 180
-
-                                    const x = Math.cos(rad) * radius
-                                    const y = Math.sin(rad) * radius * 0.55 // FLATTEN arc
-
+                                    const point = pointsForTwo[i];
                                     return (
                                         <div
-                                            key={`upper-${i}`}
-                                            className="candle"
-                                            style={{
-                                                left: "50%",
-                                                top: "90%",
-                                                transform: `
-                                                    translate(${x}px, ${y}px)
-                                                `,
-                                            }}
-                                        >
-                                            {isLit ? <span className="flame" /> : <span className="smoke" />}
-                                        </div>
-                                    )
-                                })}
-                            </div> */}
-
-                            <div className="candles four">
-                                {litCandles.slice(0, 4).map((isLit, i) => {
-                                    const total = 4
-                                    const arc = 80       // half-circle arc
-                                    const start = 230       // center the arc
-                                    const radius = 80
-
-                                    const angle = start + (arc / (total - 1)) * i
-                                    const rad = (angle * Math.PI) / 180
-
-                                    const x = Math.cos(rad) * radius
-                                    const y = Math.sin(rad) * radius * 0.55
-
-                                    return (
-                                        <div
-                                            key={i}
+                                            key={`one-${i}`}
                                             className="candle"
                                             style={{
                                                 position: "absolute",
-                                                left: "10%",
-                                                top: "20%",
-                                                transform: `
-                                                    translate(${x}px, ${y}px)
-                                                `,
+                                                left: `${point.x * candleSpacingX}px`,
+                                                top: `${point.y * candleSpacingY}px`,
                                             }}
                                         >
                                             {isLit ? <span className="flame" /> : <span className="smoke" />}
@@ -252,27 +223,18 @@ export default function BlowCandlesModal({ open, onClose, age }: Props) {
                                 })}
                             </div>
 
-                            <div className="candles three">
-                                {litCandles.slice(0, 3).map((isLit, i) => {
-                                    const total = 3
-                                    const arc = 80          // SMALL arc
-                                    const start = 220
-                                    const radius = 50
-
-                                    const angle = start + (arc / (total - 1)) * i
-                                    const rad = (angle * Math.PI) / 180
-
-                                    const x = Math.cos(rad) * radius
-                                    const y = Math.sin(rad) * radius * 0.55
-
+                            {/* Second '2' */}
+                            <div className="candles two" style={{ position: 'absolute', left: '56%', top: '25%' }}>
+                                {litCandles.slice(11, 22).map((isLit, i) => {
+                                    const point = pointsForTwo[i];
                                     return (
                                         <div
-                                            key={i}
+                                            key={`two-${i}`}
                                             className="candle"
                                             style={{
-                                                left: "50%",
-                                                top: "90%",
-                                                transform: `translate(${x}px, ${y}px)`,
+                                                position: "absolute",
+                                                left: `${point.x * candleSpacingX}px`,
+                                                top: `${point.y * candleSpacingY}px`,
                                             }}
                                         >
                                             {isLit ? <span className="flame" /> : <span className="smoke" />}
@@ -280,8 +242,6 @@ export default function BlowCandlesModal({ open, onClose, age }: Props) {
                                     )
                                 })}
                             </div>
-
-
 
                         </motion.div>
 
@@ -295,12 +255,18 @@ export default function BlowCandlesModal({ open, onClose, age }: Props) {
 
                         {!allOut ? (
                             <button className="mic-btn" onClick={startMic}>
-                                {listening ? "Blow into your mic…" : "Allow Access to Mic"}
+                                {listening ? "Blow into your mic…" : "Ready to Blow?"}
                             </button>
                         ) : (
-                            <p className="success">🎉 Happy Birthday! 🎉</p>
+                            <motion.p
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                className="success"
+                            >
+                                🎉 Happy Birthday! 🎉
+                            </motion.p>
                         )}
-                        
+
                     </motion.div>
                 </motion.div>
             )}

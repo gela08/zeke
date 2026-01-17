@@ -1,7 +1,7 @@
 .candle-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
@@ -10,7 +10,7 @@
 }
 
 /* ===============================
-   Modal Container
+    Modal Container
 ================================ */
 
 .candle-modal {
@@ -20,11 +20,9 @@
   height: 600px;
   border-radius: 14px;
   padding: 24px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: 18px;
   position: relative;
 }
@@ -41,7 +39,7 @@
 }
 
 /* ===============================
-   Modal Title
+    Modal Title
 ================================ */
 
 .candle-title {
@@ -50,9 +48,7 @@
   margin-top: 6px;
 }
 
-
 /* ===== 3D CAKE ===== */
-/* ===== CAKE ===== */
 
 .cake {
   position: relative;
@@ -60,9 +56,8 @@
   height: 200px;
   margin: 40px auto;
   transform-style: preserve-3d;
-  
+  perspective: 1000px;
 }
-
 
 .cake.celebrate {
   animation: cakeWobble 0.6s ease-in-out;
@@ -109,19 +104,12 @@
     0 28px 0 #442c0d,
     0 30px 0 #41290c,
     0 32px 0 #3e260b;
+  transform: translateZ(10px);
 }
 
-.layer-top {
-  top: 0;
-}
-
-.layer-middle {
-  top: 33px;
-}
-
-.layer-bottom {
-  top: 66px;
-}
+.layer-top { top: 0; }
+.layer-middle { top: 33px; }
+.layer-bottom { top: 66px; }
 
 /* Icing */
 
@@ -134,7 +122,7 @@
   background: #f0e4d0;
   border-radius: 50%;
   z-index: 10;
-  transform: translateZ(23px);
+  transform: translateZ(25px);
 }
 
 .icing::before {
@@ -142,7 +130,7 @@
   position: absolute;
   inset: 8px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.35);
+  background: rgba(255, 255, 255, 0.35);
 }
 
 /* Drips */
@@ -152,94 +140,54 @@
   background: #f0e4d0;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
-  transform: translateZ(20px);
   z-index: 6;
 }
 
-.drip1 {
-  top: 130px;
-  width: 30px;
-  height: 78px;
-  left: -70px;
-  border-top-left-radius: 230px;
-  border-bottom-left-radius: 230px;
-  border-top-right-radius: 130px;
-  border-bottom-right-radius: 230px;
-  transform: translateZ(22px);
-}
-
-.drip4 {
-  top: 170px;
-  left: -25px;
-  width: 100px;
-  height: 120px;
-  border-bottom-left-radius: 130px;
-  border-bottom-right-radius: 170px;
-  transform: translateZ(22px);
-}
-
-.drip2 {
-  top: 170px;
-  left: 145px;
-  width: 60px;
-  height: 150px;
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 40px;
-  transform: translateZ(22px);
-}
-
-.drip3 {
-  top: 130px;
-  left: 210px;
-  width: 100px;
-  height: 120px;
-  border-bottom-left-radius: 120px;
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 250px;
-  transform: translateZ(22px) ;
-}
+.drip1 { top: 130px; width: 30px; height: 78px; left: -70px; border-radius: 230px 130px 230px 230px; transform: translateZ(24px); }
+.drip4 { top: 170px; left: -25px; width: 100px; height: 120px; border-radius: 0 0 170px 130px; transform: translateZ(24px); }
+.drip2 { top: 170px; left: 145px; width: 60px; height: 150px; border-radius: 0 0 40px 50px; transform: translateZ(24px); }
+.drip3 { top: 130px; left: 210px; width: 100px; height: 120px; border-radius: 0 50px 250px 120px; transform: translateZ(24px); }
 
 /* ===============================
-   Candles (Front Layer)
+    Candles Grouping
 ================================ */
 
 .candles {
   position: absolute;
-  top: -28px;
-  left: 50%;
-  width: 180px;
-  height: 80px;
-  transform: translateX(-50%) translateZ(80px);
   z-index: 20;
   pointer-events: none;
+  transform-style: preserve-3d;
+  /* Lift the whole number assembly slightly above the icing */
+  transform: translateZ(35px); 
 }
 
-.candles.upper {
-  transform: translateX(-50%) translateZ(80px);
+/* We remove the hardcoded translateX/Y from here 
+   because they are now handled by 'left' and 'top' 
+   properties in your TSX file.
+*/
+.candles.one, .candles.two {
+  width: 1px;
+  height: 1px;
 }
-
-.candles.four {
-  transform: translateX(-10%) translateZ(40px) translateY(30px);
-}
-
 
 .candle {
   position: absolute;
-  width: 16px;
-  height: 50px;
+  width: 12px;
+  height: 45px;
   background: #7b020b;
-  border-radius: 8px / 4px;
-  transform: translateZ(90px);
+  border-radius: 4px;
+  transform-style: preserve-3d;
+  /* Slightly tilt individual candles back so they stand 'up' on the 3D surface */
+  transform: rotateX(-15deg); 
 }
-
 
 .candle::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  width: 16px;
-  height: 8px;
+  width: 12px;
+  height: 6px;
   background: #9c1d1d;
   border-radius: 50%;
 }
@@ -248,79 +196,73 @@
 
 .flame {
   position: absolute;
-  top: -34px;
+  top: -28px;
   left: 50%;
   transform: translateX(-50%);
-  width: 15px;
-  height: 35px;
-  background: orange;
-  border-radius: 10px 10px 10px 10px / 25px 25px 10px 10px;
+  width: 12px;
+  height: 28px;
+  background: radial-gradient(circle at bottom, #ffea00, orange, #ff4500);
+  border-radius: 50% 50% 20% 20%;
   box-shadow:
-    0 0 10px rgba(255,165,0,0.5),
-    0 0 20px rgba(255,165,0,0.5),
-    0 0 60px rgba(255,165,0,0.5);
-  transform-origin: 50% 90%;
-  animation: flicker 1s ease-in-out alternate infinite;
+    0 0 12px rgba(255, 165, 0, 0.8),
+    0 0 25px rgba(255, 69, 0, 0.4);
+  transform-origin: center bottom;
+  animation: flicker 0.1s ease-in-out infinite alternate;
 }
-
-/* Flame animation */
 
 @keyframes flicker {
-  0% {
-    transform: translateX(-50%) skewX(5deg);
-    opacity: 0.9;
-  }
-  50% {
-    transform: translateX(-50%) skewX(-5deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(-50%) skewX(5deg);
-    opacity: 0.85;
-  }
+  0% { transform: translateX(-50%) skewX(2deg) scale(0.9); opacity: 0.8; }
+  100% { transform: translateX(-50%) skewX(-2deg) scale(1.1); opacity: 1; }
 }
 
-
-.mic-btn {
-  background: #12b3c9;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-  margin-top: 150px;
-}
-
-.success {
-  font-size: 18px;
-  margin-top: 16px;
-}
-
+/* Smoke */
 
 .smoke {
   position: absolute;
-  top: -30px;
+  top: -15px;
   left: 50%;
-  width: 8px;
-  height: 8px;
-  background: rgba(200, 200, 200, 0.6);
+  width: 6px;
+  height: 6px;
+  background: rgba(220, 220, 220, 0.5);
   border-radius: 50%;
   transform: translateX(-50%);
   animation: smoke 2s ease-out forwards;
 }
 
 @keyframes smoke {
-  0% {
-    opacity: 0.8;
-    transform: translateX(-50%) translateY(0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-40px) scale(2);
-  }
+  0% { opacity: 0.6; transform: translateX(-50%) translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-50px) scale(2.5); }
 }
 
+/* UI Elements */
+
+.mic-btn {
+  background: #12b3c9;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 160px;
+  z-index: 100;
+  transition: transform 0.2s;
+}
+
+.mic-btn:active {
+  transform: scale(0.95);
+}
+
+.success {
+  font-size: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* Confetti */
 
 .confetti {
   position: absolute;
@@ -336,51 +278,10 @@
   width: 6px;
   height: 10px;
   background: hsl(var(--hue), 80%, 60%);
-  transform: translate(-50%, -50%);
   animation: confetti 1.6s ease-out forwards;
 }
 
-/* Scatter directions */
-.confetti span:nth-child(1)  { --x: -120px; --y: -140px; --hue: 10; }
-.confetti span:nth-child(2)  { --x: 80px;   --y: -160px; --hue: 40; }
-.confetti span:nth-child(3)  { --x: -90px;  --y: -100px; --hue: 70; }
-.confetti span:nth-child(4)  { --x: 140px;  --y: -80px;  --hue: 110; }
-.confetti span:nth-child(5)  { --x: -150px; --y: 60px;   --hue: 150; }
-.confetti span:nth-child(6)  { --x: 120px;  --y: 90px;   --hue: 190; }
-.confetti span:nth-child(7)  { --x: -60px;  --y: 140px;  --hue: 230; }
-.confetti span:nth-child(8)  { --x: 60px;   --y: 160px;  --hue: 270; }
-.confetti span:nth-child(9)  { --x: -130px; --y: 20px;   --hue: 310; }
-.confetti span:nth-child(10) { --x: 130px;  --y: -20px;  --hue: 350; }
-
 @keyframes confetti {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    opacity: 0;
-    transform:
-      translate(
-        calc(-50% + var(--x)),
-        calc(-50% + var(--y))
-      )
-      rotate(720deg);
-  }
-}
-
-.cake {
-  perspective: 900px;
-}
-
-.layer,
-.icing,
-.candle {
-  transform: translateZ(22px);
-}
-
-.layer-middle {
-  transform: translateZ(22px);
-}
-.layer-top {
-  transform: translateZ(22px);
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(720deg); }
 }
