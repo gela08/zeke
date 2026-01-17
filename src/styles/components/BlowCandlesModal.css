@@ -1,287 +1,403 @@
+/* =========================================
+   VARIABLES & THEMES
+   ========================================= */
+:root {
+  --modal-bg: #2d3748;
+  --modal-text: #ffffff;
+  --accent-color: #38b2ac;
+}
+
+/* Flavor Palettes */
+.cake-container.chocolate {
+  --cake-base: #3e2723;
+  --cake-shadow: #281a17;
+  --icing-bg: #5d4037;
+  --icing-highlight: #795548;
+}
+
+.cake-container.strawberry {
+  --cake-base: #c2185b;
+  --cake-shadow: #880e4f;
+  --icing-bg: #f8bbd0;
+  --icing-highlight: #fce4ec;
+}
+
+.cake-container.matcha {
+  --cake-base: #33691e;
+  --cake-shadow: #1b5e20;
+  --icing-bg: #c5e1a5;
+  --icing-highlight: #dcedc8;
+}
+
+.cake-container.cookies {
+  --cake-base: #212121;
+  --cake-shadow: #000000;
+  --icing-bg: #eeeeee;
+  --icing-highlight: #ffffff;
+  --texture: radial-gradient(#424242 15%, transparent 16%) 0 0,
+             radial-gradient(#424242 15%, transparent 16%) 8px 8px;
+}
+
+/* =========================================
+   OVERLAY & MODAL LAYOUT
+   ========================================= */
 .candle-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 9999;
+  padding: 20px;
 }
 
-/* ===============================
-    Modal Container
-================================ */
-
 .candle-modal {
-  background: #556575;
-  color: white;
-  width: 820px;
-  height: 600px;
-  border-radius: 14px;
-  padding: 24px;
+  background: var(--modal-bg);
+  color: var(--modal-text);
+  width: 100%;
+  max-width: 800px;
+  /* Responsive Height: adapts to content but keeps structure */
+  min-height: 500px; 
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  justify-content: space-between;
+  padding: 24px;
   position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+/* =========================================
+   HEADER & FLAVOR UI
+   ========================================= */
+.modal-header {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.candle-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 1px;
 }
 
 .close-btn {
   position: absolute;
-  top: 10px;
-  right: 12px;
-  background: none;
+  top: -10px;
+  right: -10px;
+  background: rgba(255,255,255,0.1);
   border: none;
-  font-size: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   color: white;
+  font-size: 18px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
-/* ===============================
-    Modal Title
-================================ */
-
-.candle-title {
-  font-size: 22px;
-  font-weight: 600;
-  margin-top: 6px;
+.close-btn:hover {
+  background: rgba(255,255,255,0.2);
 }
 
-/* ===== 3D CAKE ===== */
+.flavor-selector {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+  z-index: 50; /* Above cake */
+}
 
+.flavor-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.flavor-btn.active {
+  transform: scale(1.2);
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+/* Flavor Button Colors */
+.flavor-btn.chocolate { background: #5d4037; }
+.flavor-btn.strawberry { background: #f8bbd0; }
+.flavor-btn.matcha { background: #c5e1a5; }
+.flavor-btn.cookies { 
+  background: #eeeeee; 
+  background-image: radial-gradient(#424242 20%, transparent 20%);
+  background-size: 6px 6px;
+}
+
+/* =========================================
+   3D CAKE ENGINE (SCALING)
+   ========================================= */
+.cake-container {
+  width: 100%;
+  height: 300px; /* Allocated space for cake */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+  /* Prevent touch scrolling on the cake area to allow tilting */
+  touch-action: none; 
+}
+
+/* The cake uses fixed pixels for internal 3D math, 
+   but we scale the whole element based on screen size */
 .cake {
   position: relative;
-  width: 250px;
+  width: 300px;
   height: 200px;
-  margin: 40px auto;
   transform-style: preserve-3d;
-  perspective: 1000px;
+  cursor: grab;
 }
 
-.cake.celebrate {
-  animation: cakeWobble 0.6s ease-in-out;
+.cake:active {
+  cursor: grabbing;
 }
 
-@keyframes cakeWobble {
-  0% { transform: rotateZ(0deg); }
-  25% { transform: rotateZ(1deg); }
-  50% { transform: rotateZ(-1deg); }
-  75% { transform: rotateZ(0.5deg); }
-  100% { transform: rotateZ(0deg); }
-}
+/* --- RESPONSIVE SCALING --- */
+@media (min-width: 1024px) { .cake { transform: scale(1.2); } }
+@media (max-width: 768px) { .cake { transform: scale(0.9); } }
+@media (max-width: 480px) { .cake { transform: scale(0.65); } }
 
 /* Plate */
-
 .plate {
   position: absolute;
-  top: 100px;
-  left: -95px;
-  width: 425px;
-  height: 275px;
-  background: #ccc;
+  width: 380px;
+  height: 280px;
+  background: #e2e8f0;
   border-radius: 50%;
-  box-shadow:
-    0 2px 0 #b3b3b3,
-    0 4px 0 #b3b3b3,
-    0 5px 40px rgba(0, 0, 0, 0.5);
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateZ(-20px);
+  box-shadow: 
+    0 4px 0 #cbd5e0,
+    0 10px 40px rgba(0,0,0,0.4);
 }
 
 /* Layers */
-
 .layer {
   position: absolute;
-  width: 400px;
-  height: 250px;
-  left: -82px;
+  width: 320px;
+  height: 240px;
+  left: 50%;
+  transform: translateX(-50%);
   border-radius: 50%;
-  background: #553c13;
-  box-shadow:
-    0 15px 0 #553c13,
-    0 22px 0 #6a4a18,
-    0 24px 0 #4a330f,
-    0 26px 0 #472f0e,
-    0 28px 0 #442c0d,
-    0 30px 0 #41290c,
-    0 32px 0 #3e260b;
-  transform: translateZ(10px);
+  background: var(--cake-base);
+  box-shadow: 
+    0 4px 0 var(--cake-shadow),
+    0 8px 0 var(--cake-shadow),
+    0 12px 0 var(--cake-shadow),
+    0 16px 0 var(--cake-shadow);
 }
 
-.layer-top { top: 0; }
-.layer-middle { top: 33px; }
-.layer-bottom { top: 66px; }
+.layer-bottom { top: 60px; transform: translateX(-50%) translateZ(0px); }
+.layer-middle { top: 30px; transform: translateX(-50%) translateZ(15px); }
+.layer-top    { top: 0px;  transform: translateX(-50%) translateZ(30px); }
 
 /* Icing */
-
 .icing {
   position: absolute;
+  width: 310px;
+  height: 230px;
+  left: 50%;
   top: 2px;
-  left: -78px;
-  width: 392px;
-  height: 250px;
-  background: #f0e4d0;
+  transform: translateX(-50%) translateZ(32px);
+  background: var(--icing-bg);
+  background-color: var(--icing-bg);
+  background-image: var(--texture, none);
+  background-size: 10px 10px;
   border-radius: 50%;
-  z-index: 10;
-  transform: translateZ(25px);
 }
 
-.icing::before {
+.icing::after {
   content: "";
   position: absolute;
-  inset: 8px;
+  inset: 10px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255,255,255,0.15);
 }
 
 /* Drips */
-
 .drip {
   position: absolute;
-  background: #f0e4d0;
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
-  z-index: 6;
+  background: var(--icing-bg);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  transform: translateZ(32px);
+  z-index: 10;
 }
 
-.drip1 { top: 130px; width: 30px; height: 78px; left: -70px; border-radius: 230px 130px 230px 230px; transform: translateZ(24px); }
-.drip4 { top: 170px; left: -25px; width: 100px; height: 120px; border-radius: 0 0 170px 130px; transform: translateZ(24px); }
-.drip2 { top: 170px; left: 145px; width: 60px; height: 150px; border-radius: 0 0 40px 50px; transform: translateZ(24px); }
-.drip3 { top: 130px; left: 210px; width: 100px; height: 120px; border-radius: 0 50px 250px 120px; transform: translateZ(24px); }
+/* .drip1 { top: 210px; left: 60px; width: 40px; height: 80px; transform: translateZ(35px) rotateY(10deg); }
+.drip2 { top: 130px; left: 140px; width: 30px; height: 60px; transform: translateZ(45px); }
+.drip3 { top: 110px; left: 220px; width: 50px; height: 90px; transform: translateZ(35px) rotateY(-10deg); } */
 
-/* ===============================
-    Candles Grouping
-================================ */
-
-.candles {
+/* =========================================
+   CANDLES & FLAMES
+   ========================================= */
+.candles-group {
   position: absolute;
-  z-index: 20;
-  pointer-events: none;
+  top: 60px; /* Center visually on top of cake */
+  width: 0;
+  height: 0;
   transform-style: preserve-3d;
-  /* Lift the whole number assembly slightly above the icing */
-  transform: translateZ(35px); 
-}
-
-/* We remove the hardcoded translateX/Y from here 
-   because they are now handled by 'left' and 'top' 
-   properties in your TSX file.
-*/
-.candles.one, .candles.two {
-  width: 1px;
-  height: 1px;
+  transform: translateZ(35px);
 }
 
 .candle {
   position: absolute;
-  width: 12px;
-  height: 45px;
-  background: #7b020b;
-  border-radius: 4px;
-  transform-style: preserve-3d;
-  /* Slightly tilt individual candles back so they stand 'up' on the 3D surface */
-  transform: rotateX(-15deg); 
+  width: 8px;
+  height: 35px;
+  background: linear-gradient(to right, #e53e3e, #c53030);
+  border-radius: 2px;
+  transform-origin: bottom center;
+  transform: rotateX(-10deg); /* Counter-tilt to stand straight */
+  box-shadow: -1px 1px 2px rgba(0,0,0,0.3);
 }
 
-.candle::before {
+.candle::before { /* Wick */
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 12px;
-  height: 6px;
-  background: #9c1d1d;
-  border-radius: 50%;
+  top: -4px;
+  left: 3px;
+  width: 2px;
+  height: 4px;
+  background: #333;
 }
 
-/* Flame */
-
+/* Flame Animation */
 .flame {
   position: absolute;
-  top: -28px;
+  top: -20px;
   left: 50%;
-  transform: translateX(-50%);
-  width: 12px;
-  height: 28px;
-  background: radial-gradient(circle at bottom, #ffea00, orange, #ff4500);
+  width: 10px;
+  height: 20px;
+  background: radial-gradient(ellipse at bottom, #ffff00 0%, #ff9800 60%, transparent 100%);
   border-radius: 50% 50% 20% 20%;
-  box-shadow:
-    0 0 12px rgba(255, 165, 0, 0.8),
-    0 0 25px rgba(255, 69, 0, 0.4);
-  transform-origin: center bottom;
-  animation: flicker 0.1s ease-in-out infinite alternate;
+  transform: translateX(-50%);
+  animation: flicker 0.15s infinite alternate;
+  filter: drop-shadow(0 0 4px #ff9800);
 }
 
 @keyframes flicker {
-  0% { transform: translateX(-50%) skewX(2deg) scale(0.9); opacity: 0.8; }
-  100% { transform: translateX(-50%) skewX(-2deg) scale(1.1); opacity: 1; }
+  0% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+  100% { transform: translateX(-50%) scale(1.1) skewX(2deg); opacity: 1; }
 }
 
-/* Smoke */
-
+/* Smoke Animation */
 .smoke {
   position: absolute;
   top: -15px;
   left: 50%;
   width: 6px;
   height: 6px;
-  background: rgba(220, 220, 220, 0.5);
+  background: rgba(200, 200, 200, 0.6);
   border-radius: 50%;
-  transform: translateX(-50%);
-  animation: smoke 2s ease-out forwards;
+  animation: rise 1.5s ease-out forwards;
 }
 
-@keyframes smoke {
-  0% { opacity: 0.6; transform: translateX(-50%) translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateX(-50%) translateY(-50px) scale(2.5); }
+@keyframes rise {
+  0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+  100% { transform: translateX(-50%) translateY(-40px) scale(3); opacity: 0; }
 }
 
-/* UI Elements */
+/* =========================================
+   FOOTER & UI CONTROLS
+   ========================================= */
+.modal-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  position: relative;
+}
 
-.mic-btn {
-  background: #12b3c9;
+.action-btn {
+  background: var(--accent-color);
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 14px 32px;
+  border-radius: 50px;
   color: white;
-  cursor: pointer;
-  font-size: 15px;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-top: 160px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(56, 178, 172, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
   z-index: 100;
-  transition: transform 0.2s;
 }
 
-.mic-btn:active {
+.action-btn:active {
   transform: scale(0.95);
 }
 
-.success {
-  font-size: 20px;
-  margin-top: 20px;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+.action-btn.listening {
+  background: #e53e3e;
+  animation: pulse 1.5s infinite;
 }
 
-/* Confetti */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(229, 62, 62, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0); }
+}
 
-.confetti {
+.success-msg {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(to right, #f687b3, #b794f4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+}
+
+/* =========================================
+   CONFETTI
+   ========================================= */
+.confetti-container {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
+  z-index: 50;
 }
 
-.confetti span {
+.confetti-piece {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 6px;
-  height: 10px;
-  background: hsl(var(--hue), 80%, 60%);
-  animation: confetti 1.6s ease-out forwards;
+  width: 8px;
+  height: 12px;
+  background: #ffd700;
+  animation: pop 1.5s ease-out forwards;
 }
 
-@keyframes confetti {
+/* Randomize confetti trajectory slightly via nth-child loops would be ideal in SCSS, 
+   but for standard CSS we use a generic pop animation and assume React keys help. 
+   Ideally, inline styles for random X/Y are better, but this keeps it simple. */
+
+@keyframes pop {
   0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
-  100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(720deg); }
+  100% { opacity: 0; transform: translate(var(--x, 100px), var(--y, -200px)) rotate(720deg); }
+}
+
+/* Specific styling for mobile adjustments */
+@media (max-width: 480px) {
+  .candle-modal { padding: 16px; }
+  .candle-title { font-size: 1.5rem; }
+  .action-btn { padding: 12px 24px; font-size: 1rem; }
 }
